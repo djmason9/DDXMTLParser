@@ -12,12 +12,13 @@
 
 @implementation bitcows_parser
 
+
+
+
 -(NSDictionary*)parseData:(NSData*)data orSource:(NSString*)source orURL:(NSString*)url{
 
     [self parseDocumentWithURL:[NSURL URLWithString:url]];
-
-
-    
+ 
     return  nil;
 }
 
@@ -40,7 +41,6 @@
     else
         NSLog(@"OK");
     
-
     return ok;
 }
 
@@ -53,13 +53,18 @@
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-    if(![string isEqualToString:@""])
-        NSLog(@"CONTENT: %@",string);
+    
+    NSString *blankString = [string stringByReplacingOccurrencesOfString:@"\n" withString:@"" options:NSCaseInsensitiveSearch range:NSMakeRange(0,[string length])];
+    blankString = [blankString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+    if(![blankString isEqualToString:@""]){
+        [self.theContent appendString:[NSString stringWithFormat:@" %@",blankString]];
+    }
 }
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
     
-    if([elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"])
+    if([elementName isEqualToString:@"title"] ||[elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"]|| [elementName isEqualToString:@"span"])
         return;
     
     NSLog(@"didStartElement: %@", elementName);
@@ -85,9 +90,14 @@
 }
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
-    if([elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"])
+    if([elementName isEqualToString:@"title"] ||[elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"] || [elementName isEqualToString:@"span"])
         return;
+    
     NSLog(@"didEndElement: %@", elementName);
+    NSLog(@"CONTENT:%@", self.theContent);
+    self.theContent = [@""mutableCopy];
+    
+    
 }
 
 // error handling
