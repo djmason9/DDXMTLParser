@@ -19,25 +19,33 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    [self parseMe];
+}
+
+-(void)parseMe{
+
     NSURLResponse* response;
     NSError* error;
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://content.openclass.com/eps/pearson-reader/api/item/bed10748-e8e8-44e8-87fa-6c872d67d48f/100/file/hsus_pxe_basic/OPS/xhtml/toc.xhtml"]];
+    NSString *url =@"http://content.openclass.com/eps/pearson-reader/api/item/bed10748-e8e8-44e8-87fa-6c872d67d48f/100/file/hsus_pxe_basic/OPS/xhtml/toc.xhtml";
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     
     
     NSData* data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    NSString *source = [NSString stringWithUTF8String:[data bytes]];
     
     dispatch_async(dispatch_get_main_queue(), ^
                    {
-                       id resultDict = [[[bitcows_parser alloc] init] parseData:data];
+                       id resultDict = [[[bitcows_parser alloc] init] parseData:data orSource:source];
                        
                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                        NSString *documentsDirectory = [paths objectAtIndex:0];
                        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"myDictionary.plist"];
                        
                        [resultDict writeToFile:filePath atomically:YES];
-
+                       
                        
                    });
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,4 +54,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)doAgain:(id)sender {
+    [self parseMe];
+}
 @end

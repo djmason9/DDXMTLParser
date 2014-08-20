@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface bitcows_ViewController : UIViewController
+- (IBAction)doAgain:(id)sender;
 
 @end

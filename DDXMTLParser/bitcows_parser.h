@@ -10,6 +10,6 @@
 
 @interface bitcows_parser : NSObject
 
--(NSDictionary*)parseData:(NSData*)data;
+-(NSDictionary*)parseData:(NSData*)data orSource:(NSString*)source;
 
 @end
