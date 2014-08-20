@@ -53,10 +53,15 @@
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-    NSLog(@"CONTENT: %@",string);
+    if(![string isEqualToString:@""])
+        NSLog(@"CONTENT: %@",string);
 }
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+    
+    if([elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"])
+        return;
+    
     NSLog(@"didStartElement: %@", elementName);
     
     if (namespaceURI != nil)
@@ -80,6 +85,8 @@
 }
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+    if([elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"])
+        return;
     NSLog(@"didEndElement: %@", elementName);
 }
 
