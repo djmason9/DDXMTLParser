@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface bitcows_parser : NSObject
+@interface bitcows_parser : NSObject<NSXMLParserDelegate>
 
--(NSDictionary*)parseData:(NSData*)data orSource:(NSString*)source;
+-(NSDictionary*)parseData:(NSData*)data orSource:(NSString*)source orURL:(NSString*)url;
 
 @end

@@ -35,7 +35,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^
                    {
-                       id resultDict = [[[bitcows_parser alloc] init] parseData:data orSource:source];
+                       id resultDict = [[[bitcows_parser alloc] init] parseData:data orSource:source orURL: url];
                        
                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                        NSString *documentsDirectory = [paths objectAtIndex:0];
