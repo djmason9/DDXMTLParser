@@ -89,9 +89,7 @@ NSString *const kXMLReaderTextNodeKey = @"title";
     
     NSString *classname = [attributeDict objectForKey:@"class"];
 
-    if([classname isEqualToString:@"tocentrylist"] || [classname isEqualToString:@"objective"]){
-        [_theContent appendFormat:@"##"];
-    }
+    
 
     if([attributeDict objectForKey:@"id"]){
         objectId = [attributeDict objectForKey:@"id"];
@@ -136,6 +134,13 @@ NSString *const kXMLReaderTextNodeKey = @"title";
         if([elementName isEqualToString:@"a"]){
             [childDict setObject:objectId forKey:@"id"];
         }
+        
+        if(([classname isEqualToString:@"tocentrylist"] || [classname isEqualToString:@"objective"]) && ![_theContent isEqualToString:@""]){
+            [childDict setObject:_theContent forKey:@"title"];
+            _theContent = [@""mutableCopy];
+            
+        }
+        
         // Add the new child dictionary to the array
         [array addObject:childDict];
     }
@@ -150,6 +155,12 @@ NSString *const kXMLReaderTextNodeKey = @"title";
         
         if([elementName isEqualToString:@"a"]){
             [childDict setObject:objectId forKey:@"id"];
+        }
+        
+        if(([classname isEqualToString:@"tocentrylist"] || [classname isEqualToString:@"objective"]) && ![_theContent isEqualToString:@""]){
+            [childDict setObject:_theContent forKey:@"title"];
+            _theContent = [@""mutableCopy];
+            
         }
         
         // No existing value, so update the dictionary
