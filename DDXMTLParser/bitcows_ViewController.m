@@ -45,8 +45,8 @@
                        [resultDict writeToFile:filePath atomically:YES];
                        
                        bitcows_ripper *ripper = [[bitcows_ripper alloc]init];
-                      // NSLog(@"***************** TOC ***************************");
-                      // [ripper ripPagesIntoList:resultDict[@"nav"][0][@"ol"] parentId:@"root"];
+                       NSLog(@"***************** TOC ***************************");
+                       [ripper ripPagesIntoList:resultDict[@"nav"][0][@"ol"] parentId:@"root"];
                        NSLog(@"***************** BASKET ***************************");
                        [ripper ripCustomBasketPagesIntoList:resultDict[@"nav"][0][@"learner-objects"] parentId:@"root"];
                        

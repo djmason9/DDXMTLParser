@@ -78,7 +78,11 @@
 
 -(void)ripCustomBasketPagesIntoList:(id)childrens parentId:(NSString*)parentId {
     
-    BOOL isChildren = NO;
+    static BOOL hasChildren = NO;
+    
+    if([parentId isEqualToString:@"root"]){
+        hasChildren = YES;
+    }
     
     for (id key in childrens)
     {
@@ -86,38 +90,46 @@
         //dicts only
         if([childrens[key] isKindOfClass:[NSDictionary class]]){
             
-            id children = childrens[key][NCX_PARENT];
             
-            if(children) {
-                isChildren = YES;
-            }
             
             // 1. if list item grab the a
             // 2. if the list item is an array loop the array and grab the a
             // 3. if the list item has an OL call recursive and start over
+            
+            if(childrens[@"ol"] && [childrens[@"ol"][@"li"] isKindOfClass:[NSArray class]])
+            {
+                if(childrens[@"ol"][@"li"][0])
+                    hasChildren = YES;
+            }else if(childrens[@"ol"] && [childrens[@"ol"][@"li"] isKindOfClass:[NSDictionary class]])
+            {
+                if(childrens[@"ol"][@"li"])
+                    hasChildren = YES;
+            }
             
             if(childrens[key]){
                 
                 if ([childrens[key] isKindOfClass:[NSArray class]]) {
                     //loop all the kids
                     for (id kid in [childrens objectForKey:key]) {
-                        if(![self parsePageDetails:kid withParentId:parentId childrenFound:isChildren]) {
+                        if(![self parsePageDetails:kid withParentId:parentId childrenFound:hasChildren]) {
 //                            int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
 //                            NSLog(@"1. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size]);
                         }
+                        hasChildren = NO;
                     }
                     
                 }else{
                     
-                    if(![self parsePageDetails:childrens[key] withParentId:parentId childrenFound:isChildren]) {
+                    if(![self parsePageDetails:childrens[key] withParentId:parentId childrenFound:hasChildren]) {
                         //int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
                         //NSLog(@"2. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size])
                         if(childrens[@"id"])
                            parentId = childrens[@"id"];
                         
-                        NSLog(@"1. [%@] Dilling Down into %@",key,parentId);
+                        //NSLog(@"1. [%@] Dilling Down into %@",key,parentId);
                         [self ripCustomBasketPagesIntoList:childrens[key] parentId:parentId];
                     }
+                    hasChildren = NO;
                     parentId = childrens[@"a"][@"id"];
                 }
               
@@ -125,7 +137,7 @@
         }else if([childrens[key] isKindOfClass:[NSArray class]]){
             //loop this and get out its goodies
             for (id kids in [childrens objectForKey:key]){
-                NSLog(@"3. [%@] Dilling Down into %@",key,parentId);
+                //NSLog(@"3. [%@] Dilling Down into %@",key,parentId);
                 [self ripCustomBasketPagesIntoList:kids parentId:parentId];
             }
             
@@ -142,6 +154,19 @@
 -(void)ripPagesIntoList:(id)childrens parentId:(NSString*)parentId
 {    
     BOOL isChildren = NO;
+    BOOL hasChildren = NO;
+    
+    if(childrens[@"li"] && [childrens[@"li"] isKindOfClass:[NSDictionary class]]){
+        id children = childrens[@"li"][NCX_PARENT];
+        
+        if(children) {
+            isChildren = YES;
+        }
+    }
+    
+    if([parentId isEqualToString:@"root"]){
+        hasChildren=YES;
+    }
     
     for (id key in childrens)
     {
@@ -149,11 +174,7 @@
             //dicts only
             if([childrens[key] isKindOfClass:[NSDictionary class]]){
                 
-                id children = childrens[key][NCX_PARENT];
                 
-                if(children) {
-                    isChildren = YES;
-                }
                 
                 // 1. if list item grab the a
                 // 2. if the list item is an array loop the array and grab the a
@@ -164,26 +185,35 @@
                     if ([childrens[key] isKindOfClass:[NSArray class]]) {
                         //loop all the kids
                         for (id kid in [childrens objectForKey:key]) {
-                            if(![self parsePageDetails:kid withParentId:parentId childrenFound:isChildren]) {
-                                int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
+                            
+                            if([key isEqualToString:@"a"] && childrens[@"ol"] && childrens[@"ol"][@"li"]){
+                                hasChildren = YES;
+                            }
+                            
+                            if(![self parsePageDetails:kid withParentId:parentId childrenFound:hasChildren]) {
+                                //int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
                                 //NSLog(@"1. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size]);
                             }
                         }
                         
                     }else{
                         
-                        if(![self parsePageDetails:childrens[key] withParentId:parentId childrenFound:isChildren]) {
-                            int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
+                        if([key isEqualToString:@"a"] && childrens[@"ol"] && childrens[@"ol"][@"li"]){
+                            hasChildren = YES;
+                        }
+                       
+                        if(![self parsePageDetails:childrens[key] withParentId:parentId childrenFound:hasChildren]) {
+                            //int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
                             //NSLog(@"2. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size]);
-                            parentId = childrens[@"id"];
+                            parentId = childrens[@"a"][@"id"];
                             [self ripPagesIntoList:childrens[key] parentId:parentId];
                         }
                     }
                     
                     
                     if(isChildren){
-                        // NSLog(@"1. Dilling Down into %@",childrens[key][@"id"]);
-                        parentId = childrens[key][@"id"];
+                         NSLog(@"1. Dilling Down into %@",childrens[key][@"id"]);
+                        parentId = childrens[key][@"a"][@"id"];
                         [self ripPagesIntoList:childrens[key][@"ol"] parentId:parentId];
                     }
                 }
