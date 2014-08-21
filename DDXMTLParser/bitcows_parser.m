@@ -60,11 +60,11 @@ NSString *const kXMLReaderTextNodeKey = @"title";
 }
 
 -(void)parserDidStartDocument:(NSXMLParser *)parser {
-    NSLog(@"didStartDocument");
+//    NSLog(@"didStartDocument");
 }
 
 -(void)parserDidEndDocument:(NSXMLParser *)parser {
-    NSLog(@"didEndDocument");
+//    NSLog(@"didEndDocument");
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
@@ -79,6 +79,7 @@ NSString *const kXMLReaderTextNodeKey = @"title";
 }
 
 -(void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict {
+    
     
     if([elementName isEqualToString:@"h1"] ||[elementName isEqualToString:@"title"] || [elementName isEqualToString:@"header"] || [elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"]|| [elementName isEqualToString:@"span"])
         return;
@@ -136,7 +137,7 @@ NSString *const kXMLReaderTextNodeKey = @"title";
         }
         
         if(([classname isEqualToString:@"tocentrylist"] || [classname isEqualToString:@"objective"]) && ![_theContent isEqualToString:@""]){
-            [childDict setObject:_theContent forKey:@"title"];
+            [childDict setObject:[_theContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:kXMLReaderTextNodeKey];
             _theContent = [@""mutableCopy];
             
         }
@@ -158,7 +159,7 @@ NSString *const kXMLReaderTextNodeKey = @"title";
         }
         
         if(([classname isEqualToString:@"tocentrylist"] || [classname isEqualToString:@"objective"]) && ![_theContent isEqualToString:@""]){
-            [childDict setObject:_theContent forKey:@"title"];
+            [childDict setObject:[_theContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:kXMLReaderTextNodeKey];
             _theContent = [@""mutableCopy];
             
         }
@@ -171,16 +172,16 @@ NSString *const kXMLReaderTextNodeKey = @"title";
     [domElmArray addObject:childDict];
     
     
-    NSLog(@"didStartElement: %@", elementName);
-    if([elementName isEqualToString:@"li"]){
-        NSLog(@"******** parentId= %@ *********", _parentId);
-    }
+//    NSLog(@"didStartElement: %@", elementName);
+//    if([elementName isEqualToString:@"li"]){
+//        NSLog(@"******** parentId= %@ *********", _parentId);
+//    }
     
-    if (namespaceURI != nil)
-        NSLog(@"namespace: %@", namespaceURI);
-    
-    if (qName != nil)
-        NSLog(@"qualifiedName: %@", qName);
+//    if (namespaceURI != nil)
+//        NSLog(@"namespace: %@", namespaceURI);
+//    
+//    if (qName != nil)
+//        NSLog(@"qualifiedName: %@", qName);
     
     // print all attributes for this element
     NSEnumerator *attribs = [attributeDict keyEnumerator];
@@ -188,12 +189,16 @@ NSString *const kXMLReaderTextNodeKey = @"title";
     
     while((key = [attribs nextObject]) != nil) {
         value = [attributeDict objectForKey:key];
-        NSLog(@">>> attribute: %@ = %@", key, value);
+//        NSLog(@">>> attribute: %@ = %@", key, value);
     }
     
 }
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
+    
+    if([elementName isEqualToString:@"h1"]||[elementName isEqualToString:@"title"])
+        _theContent = [@""mutableCopy];
+    
     if([elementName isEqualToString:@"h1"] ||[elementName isEqualToString:@"header"] ||[elementName isEqualToString:@"title"] ||[elementName isEqualToString:@"html"] || [elementName isEqualToString:@"head"] || [elementName isEqualToString:@"link"] || [elementName isEqualToString:@"body"] || [elementName isEqualToString:@"meta"] || [elementName isEqualToString:@"span"])
         return;
 
@@ -201,13 +206,13 @@ NSString *const kXMLReaderTextNodeKey = @"title";
     // Update the parent dict with text info
     NSMutableDictionary *dictInProgress = [domElmArray lastObject];
 
-    NSLog(@"didEndElement: %@", elementName);
+//    NSLog(@"didEndElement: %@", elementName);
     
     if(![_theContent isEqualToString:@""] && ![elementName isEqualToString:@"h1"] && ![elementName isEqualToString:@"header"]){
        
-        [dictInProgress setObject:_theContent forKey:kXMLReaderTextNodeKey];
+        [dictInProgress setObject:[_theContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:kXMLReaderTextNodeKey];
         
-        NSLog(@"CONTENT:%@", _theContent);
+//        NSLog(@"CONTENT:%@", _theContent);
     }
     
     _theContent = [@""mutableCopy];

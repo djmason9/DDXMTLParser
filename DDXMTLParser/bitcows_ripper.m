@@ -86,6 +86,10 @@
     
     for (NSDictionary *dic in childrens)
     {
+        if(![dic isKindOfClass:[NSString class]]) {
+            [self ripPagesIntoList:dic parentId:parentId];
+        }
+        
         if ([childrens[dic] isKindOfClass:[NSDictionary class]])
         {
             
@@ -107,7 +111,8 @@
                 }
                 
                 if(![self parsePageDetails:ncxContent withParentId:parentId childrenFound:isChildren]) {
-                    NSLog(@"Error inserting pages in core data....");
+                    int size = [[ncxContent description] length] > 150? 150 : [[ncxContent description]length];
+                    NSLog(@"wrong data type (%@)..., moving on...",[[ncxContent description] substringToIndex:size]);
                 }
                 
                 rootId = (ncxContent[NCX_ID] != nil) ? ncxContent[NCX_ID] : @"root";
@@ -164,7 +169,7 @@
                 }
                 
                 if(![self parsePageDetails:ncxContent withParentId:parentId childrenFound:isChildren]) {
-                    NSLog(@"Error inserting pages in core data....");
+                    NSLog(@"wrong data type (%@) moving on...",[ncxContent description]);
                 }
                 
                 rootId = (ncxContent[NCX_ID] != nil) ? ncxContent[NCX_ID] : @"root";

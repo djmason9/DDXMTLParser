@@ -46,9 +46,11 @@
                        
                        bitcows_ripper *ripper = [[bitcows_ripper alloc]init];
                        
+                       [ripper ripPagesIntoList:resultDict[@"nav"][0][@"ol"] parentId:@"root"];
+                       
                        [ripper ripPagesIntoBasketList:resultDict[@"nav"][0][@"learner-objects"] parentId:@"root"];
                        
-                       [ripper ripPagesIntoList:resultDict[@"nav"][0][@"ol"] parentId:@"root"];
+                       
                        
                        
                    });
