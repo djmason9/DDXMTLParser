@@ -48,7 +48,7 @@
                        
                        [ripper ripPagesIntoList:resultDict[@"nav"][0][@"ol"] parentId:@"root"];
                        
-                       [ripper ripPagesIntoBasketList:resultDict[@"nav"][0][@"learner-objects"] parentId:@"root"];
+                       [ripper ripCustomBasketPagesIntoList:resultDict[@"nav"][0][@"learner-objects"] parentId:@"root"];
                        
                        
                        

@@ -26,9 +26,18 @@
 
     static int i=0;
     
+    
+    
+    if(data[@"a"]){
+        data = data[@"a"];
+    }
+    
+    
     if(data[@"ol"]){
         return NO;
     }
+    
+    
     
     NSString *pageUrl = data[NCX_SRC];
     if(pageUrl)
@@ -54,6 +63,7 @@
         basketDetails.isChildren = [NSNumber numberWithBool:isChildren];
         basketDetails.book = @"book1222";
         
+        NSLog(@"CORE DATA: %@",[basketDetails description]);
 
          i++;
     }
@@ -64,7 +74,7 @@
     return YES;
 }
 
--(void)ripCustomBasketPagesIntoList:(NSArray*)childrens parentId:(NSString*)parentId {
+-(void)ripCustomBasketPagesIntoList:(id)childrens parentId:(NSString*)parentId {
     
 }
 
@@ -76,128 +86,65 @@
 -(void)ripPagesIntoList:(id)childrens parentId:(NSString*)parentId
 {
     
+    BOOL isChildren = NO;
     
-    static NSInteger uniqueId = 0;
-    
-    if([childrens isKindOfClass:[NSArray class]]){
-    
-        [self ripPagesIntoList:childrens[uniqueId] parentId:parentId];
-    }
-    
-    for (NSDictionary *dic in childrens)
+    for (id key in childrens)
     {
-        if(![dic isKindOfClass:[NSString class]]) {
-            [self ripPagesIntoList:dic parentId:parentId];
-        }
         
-        if ([childrens[dic] isKindOfClass:[NSDictionary class]])
-        {
-            
-            id children = childrens[dic][NCX_PARENT];
-            BOOL isChildren = NO;
-            if(children) {
-                isChildren = YES;
-            }
-            
-            NSMutableDictionary *ncxContent = childrens[dic];
-            NSString *rootId = @"root";
-            
-            if((ncxContent) && ([ncxContent isKindOfClass:[NSDictionary class]]))
-            {
-                if(!ncxContent[NCX_ID])
-                {
-                    [ncxContent setValue:[NSString stringWithFormat:@"root_%d",uniqueId] forKey:NCX_ID];
-                    ++uniqueId;
+            //dicts only
+            if([childrens[key] isKindOfClass:[NSDictionary class]]){
+                
+                id children = childrens[key][NCX_PARENT];
+                
+                if(children) {
+                    isChildren = YES;
                 }
                 
-                if(![self parsePageDetails:ncxContent withParentId:parentId childrenFound:isChildren]) {
-                    int size = [[ncxContent description] length] > 150? 150 : [[ncxContent description]length];
-                    NSLog(@"wrong data type (%@)..., moving on...",[[ncxContent description] substringToIndex:size]);
-                }
+                // 1. if list item grab the a
+                // 2. if the list item is an array loop the array and grab the a
+                // 3. if the list item has an OL call recursive and start over
                 
-                rootId = (ncxContent[NCX_ID] != nil) ? ncxContent[NCX_ID] : @"root";
-            }
+                if(childrens[key]){
+                    
+                    if ([childrens[key] isKindOfClass:[NSArray class]]) {
+                        //loop all the kids
+                        for (id kid in [childrens objectForKey:key]) {
+                            if(![self parsePageDetails:kid withParentId:parentId childrenFound:isChildren]) {
+                                int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
+                                //NSLog(@"1. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size]);
+                            }
+                        }
+                        
+                    }else{
+                        
+                        if(![self parsePageDetails:childrens[key] withParentId:parentId childrenFound:isChildren]) {
+                            int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
+                            //NSLog(@"2. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size]);
+                            parentId = childrens[@"id"];
+                            [self ripPagesIntoList:childrens[key] parentId:parentId];
+                        }
+                    }
+                    
+                    
+                    if(isChildren){
+                        // NSLog(@"1. Dilling Down into %@",childrens[key][@"id"]);
+                        parentId = childrens[key][@"id"];
+                        [self ripPagesIntoList:childrens[key][@"ol"] parentId:parentId];
+                    }
+                }
+            }else if([childrens[key] isKindOfClass:[NSArray class]]){
+                //loop this and get out its goodies
+                for (id kids in [childrens objectForKey:key]){
+                    //NSLog(@"2. Dilling Down into %@",parentId);
+                    [self ripPagesIntoList:kids parentId:parentId];
+                }
             
-            if(isChildren)
-            {
-                
-                
-                NSArray *items = children[NCX_CHILDREN];
-                if(![items isKindOfClass:[NSArray class]]) {
-                    items = @[items];
-                }
-                
-                [self ripPagesIntoList:items parentId:rootId];
             }
-        }
-
+        
     }
+
     
 }
 
-/**
- This method would be called recursively to convert the tree of generic data into the list of models
- @param NSArray, childrens is a array of data from the tree of generic data
- @param NSString, parentId is a root id of the branch.
- */
--(void)ripPagesIntoBasketList:(id)childrens parentId:(NSString*)parentId
-{
-    
-    
-    static NSInteger uniqueId = 0;
-    
-    for (NSDictionary *dic in childrens)
-    {
-        if ([childrens[dic] isKindOfClass:[NSDictionary class]])
-        {
-            
-            id children = childrens[dic][NCX_PARENT];
-            BOOL isChildren = NO;
-            if(children) {
-                isChildren = YES;
-            }
-            
-            NSMutableDictionary *ncxContent = childrens[dic];
-            NSString *rootId = @"root";
-            
-            if((ncxContent) && ([ncxContent isKindOfClass:[NSDictionary class]]))
-            {
-                if(!ncxContent[NCX_ID])
-                {
-                    [ncxContent setValue:[NSString stringWithFormat:@"root_%d",uniqueId] forKey:NCX_ID];
-                    ++uniqueId;
-                }
-                
-                if(![self parsePageDetails:ncxContent withParentId:parentId childrenFound:isChildren]) {
-                    NSLog(@"wrong data type (%@) moving on...",[ncxContent description]);
-                }
-                
-                rootId = (ncxContent[NCX_ID] != nil) ? ncxContent[NCX_ID] : @"root";
-            }
-            
-            if(isChildren)
-            {
-                
-                
-                NSArray *items = children[NCX_CHILDREN];
-                if(![items isKindOfClass:[NSArray class]]) {
-                    items = @[items];
-                }
-                
-                [self ripPagesIntoBasketList:items parentId:rootId];
-            }
-        }
-//        else
-//        {
-//            if([dic isKindOfClass:[NSArray class]])
-//            {
-//                for (id object in dic) {
-//                    [self ripPagesIntoBasketList:object parentId:@"root"];
-//                }
-//            }
-//        }
-    }
-    
-}
 
 @end

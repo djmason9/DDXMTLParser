@@ -10,7 +10,7 @@
 
 @interface bitcows_ripper : NSObject
 
--(void)ripPagesIntoList:(NSArray*)childrens parentId:(NSString*)parentId;
--(void)ripPagesIntoBasketList:(NSArray*)childrens parentId:(NSString*)parentId;
+-(void)ripPagesIntoList:(id)childrens parentId:(NSString*)parentId;
+-(void)ripCustomBasketPagesIntoList:(id)childrens parentId:(NSString*)parentId;
 
 @end

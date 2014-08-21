@@ -11,7 +11,10 @@
 @implementation BasketDetails
 
 
+-(NSString*)description{
 
+    return [NSString stringWithFormat:@"TITLE: (%@) PARENT ID: (%@) ID: (%@)",_pageTitle,_parentId,_pageId];
+}
 
 
 @end
