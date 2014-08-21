@@ -8,6 +8,7 @@
 
 #import "bitcows_ViewController.h"
 #import "bitcows_parser.h"
+#import "bitcows_ripper.h"
 
 @interface bitcows_ViewController ()
 
@@ -42,6 +43,12 @@
                        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"myDictionary.plist"];
                        
                        [resultDict writeToFile:filePath atomically:YES];
+                       
+                       bitcows_ripper *ripper = [[bitcows_ripper alloc]init];
+                       
+                       [ripper ripPagesIntoBasketList:resultDict[@"nav"][0][@"learner-objects"] parentId:@"root"];
+                       
+                       [ripper ripPagesIntoList:resultDict[@"nav"][0][@"ol"] parentId:@"root"];
                        
                        
                    });

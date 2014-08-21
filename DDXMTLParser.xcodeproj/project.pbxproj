@@ -23,6 +23,8 @@
 		BC5E977319A54EF400CA6166 /* DDXMTLParserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5E977219A54EF400CA6166 /* DDXMTLParserTests.m */; };
 		BC5E977F19A54FA000CA6166 /* bitcows_parser.m in Sources */ = {isa = PBXBuildFile; fileRef = BC5E977E19A54FA000CA6166 /* bitcows_parser.m */; };
 		BC5E979619A5517900CA6166 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BC5E979519A5517900CA6166 /* libxml2.dylib */; };
+		BCBDDA7919A5B528008B7BE2 /* bitcows_ripper.m in Sources */ = {isa = PBXBuildFile; fileRef = BCBDDA7819A5B528008B7BE2 /* bitcows_ripper.m */; };
+		BCBDDA7D19A5B5ED008B7BE2 /* BasketDetails.m in Sources */ = {isa = PBXBuildFile; fileRef = BCBDDA7C19A5B5ED008B7BE2 /* BasketDetails.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,10 @@
 		BC5E977D19A54FA000CA6166 /* bitcows_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitcows_parser.h; sourceTree = "<group>"; };
 		BC5E977E19A54FA000CA6166 /* bitcows_parser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bitcows_parser.m; sourceTree = "<group>"; };
 		BC5E979519A5517900CA6166 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		BCBDDA7719A5B528008B7BE2 /* bitcows_ripper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitcows_ripper.h; sourceTree = "<group>"; };
+		BCBDDA7819A5B528008B7BE2 /* bitcows_ripper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = bitcows_ripper.m; sourceTree = "<group>"; };
+		BCBDDA7B19A5B5ED008B7BE2 /* BasketDetails.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasketDetails.h; sourceTree = "<group>"; };
+		BCBDDA7C19A5B5ED008B7BE2 /* BasketDetails.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasketDetails.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +134,10 @@
 				BC5E974E19A54EF400CA6166 /* Supporting Files */,
 				BC5E977D19A54FA000CA6166 /* bitcows_parser.h */,
 				BC5E977E19A54FA000CA6166 /* bitcows_parser.m */,
+				BCBDDA7719A5B528008B7BE2 /* bitcows_ripper.h */,
+				BCBDDA7819A5B528008B7BE2 /* bitcows_ripper.m */,
+				BCBDDA7B19A5B5ED008B7BE2 /* BasketDetails.h */,
+				BCBDDA7C19A5B5ED008B7BE2 /* BasketDetails.m */,
 			);
 			path = DDXMTLParser;
 			sourceTree = "<group>";
@@ -259,10 +269,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCBDDA7D19A5B5ED008B7BE2 /* BasketDetails.m in Sources */,
 				BC5E975E19A54EF400CA6166 /* bitcows_ViewController.m in Sources */,
 				BC5E975819A54EF400CA6166 /* bitcows_AppDelegate.m in Sources */,
 				BC5E977F19A54FA000CA6166 /* bitcows_parser.m in Sources */,
 				BC5E975419A54EF400CA6166 /* main.m in Sources */,
+				BCBDDA7919A5B528008B7BE2 /* bitcows_ripper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

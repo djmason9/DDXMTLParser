@@ -10,6 +10,7 @@
 
 @interface bitcows_parser : NSObject<NSXMLParserDelegate>
 
--(NSDictionary*)parseData:(NSData*)data orSource:(NSString*)source orURL:(NSString*)url;
+-(id)parseData:(NSData*)data orSource:(NSString*)source orURL:(NSString*)url;
 @property(nonatomic,strong) NSMutableString *theContent;
+@property(nonatomic,strong) NSString *parentId;
 @end
