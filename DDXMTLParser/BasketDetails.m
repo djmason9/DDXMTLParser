@@ -13,7 +13,7 @@
 
 -(NSString*)description{
 
-    return [NSString stringWithFormat:@"TITLE: (%@) PARENT ID: (%@) ID: (%@)",_pageTitle,_parentId,_pageId];
+    return [NSString stringWithFormat:@"PARENT ID: (%@) ID: (%@) TITLE: (%@) ",_parentId,_pageId,_pageTitle];
 }
 
 

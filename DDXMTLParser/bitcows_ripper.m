@@ -26,7 +26,9 @@
 
     static int i=0;
     
-    
+    if(data[@"li"]){
+        return NO;
+    }
     
     if(data[@"a"]){
         data = data[@"a"];
@@ -76,6 +78,60 @@
 
 -(void)ripCustomBasketPagesIntoList:(id)childrens parentId:(NSString*)parentId {
     
+    BOOL isChildren = NO;
+    
+    for (id key in childrens)
+    {
+        
+        //dicts only
+        if([childrens[key] isKindOfClass:[NSDictionary class]]){
+            
+            id children = childrens[key][NCX_PARENT];
+            
+            if(children) {
+                isChildren = YES;
+            }
+            
+            // 1. if list item grab the a
+            // 2. if the list item is an array loop the array and grab the a
+            // 3. if the list item has an OL call recursive and start over
+            
+            if(childrens[key]){
+                
+                if ([childrens[key] isKindOfClass:[NSArray class]]) {
+                    //loop all the kids
+                    for (id kid in [childrens objectForKey:key]) {
+                        if(![self parsePageDetails:kid withParentId:parentId childrenFound:isChildren]) {
+//                            int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
+//                            NSLog(@"1. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size]);
+                        }
+                    }
+                    
+                }else{
+                    
+                    if(![self parsePageDetails:childrens[key] withParentId:parentId childrenFound:isChildren]) {
+                        //int size = [[childrens[key] description] length] > 150? 150 : [[childrens[key] description]length];
+                        //NSLog(@"2. wrong data type (%@)..., moving on...",[[childrens[key] description] substringToIndex:size])
+                        if(childrens[@"id"])
+                           parentId = childrens[@"id"];
+                        
+                        NSLog(@"1. [%@] Dilling Down into %@",key,parentId);
+                        [self ripCustomBasketPagesIntoList:childrens[key] parentId:parentId];
+                    }
+                    parentId = childrens[@"a"][@"id"];
+                }
+              
+            }
+        }else if([childrens[key] isKindOfClass:[NSArray class]]){
+            //loop this and get out its goodies
+            for (id kids in [childrens objectForKey:key]){
+                NSLog(@"3. [%@] Dilling Down into %@",key,parentId);
+                [self ripCustomBasketPagesIntoList:kids parentId:parentId];
+            }
+            
+        }
+        
+    }
 }
 
 /**
@@ -84,8 +140,7 @@
  @param NSString, parentId is a root id of the branch.
  */
 -(void)ripPagesIntoList:(id)childrens parentId:(NSString*)parentId
-{
-    
+{    
     BOOL isChildren = NO;
     
     for (id key in childrens)

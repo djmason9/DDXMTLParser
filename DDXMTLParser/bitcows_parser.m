@@ -10,6 +10,7 @@
 
 
 NSString *const kXMLReaderTextNodeKey = @"title";
+NSString *const kXMLReaderLinkNodeKey = @"href";
 
 
 
@@ -126,7 +127,7 @@ NSString *const kXMLReaderTextNodeKey = @"title";
             [parentDict setObject:array forKey:elementName];
         }
         
-        if([elementName isEqualToString:@"nav"]){
+        if([elementName isEqualToString:@"nav"] || [elementName isEqualToString:@"ol"] || [elementName isEqualToString:@"li"]){
             [childDict removeObjectForKey:@"id"];
         }
         [childDict removeObjectForKey:@"class"];
@@ -137,7 +138,13 @@ NSString *const kXMLReaderTextNodeKey = @"title";
         }
         
         if(([classname isEqualToString:@"tocentrylist"] || [classname isEqualToString:@"objective"]) && ![_theContent isEqualToString:@""]){
+            //since this guy has no a tag we need to make an href for him that nothing right now
+            [childDict setObject:@"#" forKey:kXMLReaderLinkNodeKey];
+            [childDict setObject:objectId forKey:@"id"];
             [childDict setObject:[_theContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:kXMLReaderTextNodeKey];
+            //now lets nest this in an anchor anyway
+            childDict = [@{@"a":childDict}mutableCopy];
+        
             _theContent = [@""mutableCopy];
             
         }
@@ -147,7 +154,7 @@ NSString *const kXMLReaderTextNodeKey = @"title";
     }
     else
     {
-        if([elementName isEqualToString:@"nav"]){
+        if([elementName isEqualToString:@"nav"] || [elementName isEqualToString:@"ol"] || [elementName isEqualToString:@"li"]){
             [childDict removeObjectForKey:@"id"];
         }
         [childDict removeObjectForKey:@"class"];
@@ -159,7 +166,11 @@ NSString *const kXMLReaderTextNodeKey = @"title";
         }
         
         if(([classname isEqualToString:@"tocentrylist"] || [classname isEqualToString:@"objective"]) && ![_theContent isEqualToString:@""]){
+            [childDict setObject:@"#" forKey:kXMLReaderLinkNodeKey];
+            [childDict setObject:objectId forKey:@"id"];
             [childDict setObject:[_theContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] forKey:kXMLReaderTextNodeKey];
+            //now lets nest this in an anchor anyway
+            childDict = [@{@"a":childDict}mutableCopy];
             _theContent = [@""mutableCopy];
             
         }

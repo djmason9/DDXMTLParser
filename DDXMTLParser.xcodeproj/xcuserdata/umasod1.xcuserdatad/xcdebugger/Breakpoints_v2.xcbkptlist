@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDXMTLParser/bitcows_ripper.m"
-            timestampString = "430331667.888694"
+            timestampString = "430338834.331832"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "-ripPagesIntoList:parentId:"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "-ripCustomBasketPagesIntoList:parentId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDXMTLParser/bitcows_ripper.m"
-            timestampString = "430331287.020643"
+            timestampString = "430338960.949071"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
-            landmarkName = "-ripPagesIntoList:parentId:"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "-ripCustomBasketPagesIntoList:parentId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDXMTLParser/bitcows_ripper.m"
-            timestampString = "430331666.056773"
+            timestampString = "430338961.897603"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
-            landmarkName = "-ripPagesIntoList:parentId:"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "-ripCustomBasketPagesIntoList:parentId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -58,12 +58,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DDXMTLParser/bitcows_ripper.m"
-            timestampString = "430331743.391692"
+            timestampString = "430339198.006022"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "91"
             endingLineNumber = "91"
-            landmarkName = "-ripPagesIntoList:parentId:"
+            landmarkName = "-ripCustomBasketPagesIntoList:parentId:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DDXMTLParser/bitcows_ripper.m"
+            timestampString = "430339341.771364"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "-ripCustomBasketPagesIntoList:parentId:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
